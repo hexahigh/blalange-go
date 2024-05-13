@@ -5,7 +5,6 @@ import (
 	"image"
 	"image/color"
 
-	"github.com/TheZoraiz/ascii-image-converter/aic_package/winsize"
 	"github.com/disintegration/imaging"
 	gookitColor "github.com/gookit/color"
 	"github.com/makeworld-the-better-one/dither/v2"
@@ -34,10 +33,7 @@ func resizeImage(img image.Image, full, isBraille bool, dimensions []int, width,
 	aspectRatio := imgWidth / imgHeight
 
 	if full {
-		terminalWidth, _, err := winsize.GetTerminalSize()
-		if err != nil {
-			return nil, err
-		}
+		terminalWidth := 1000
 
 		asciiWidth = terminalWidth - 1
 		asciiHeight = int(float64(asciiWidth) / aspectRatio)
@@ -75,10 +71,8 @@ func resizeImage(img image.Image, full, isBraille bool, dimensions []int, width,
 	} else if len(dimensions) == 0 {
 		// This condition calculates aspect ratio according to terminal height
 
-		terminalWidth, terminalHeight, err := winsize.GetTerminalSize()
-		if err != nil {
-			return nil, err
-		}
+		terminalWidth := 1000
+		terminalHeight := 1000
 
 		asciiHeight = terminalHeight - 1
 		asciiWidth = int(float64(asciiHeight) * aspectRatio)
