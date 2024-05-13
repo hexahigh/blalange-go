@@ -23,6 +23,7 @@ var (
 	braille          = flag.Bool("b", false, "Braille output")
 	grayscale        = flag.Bool("gs", false, "Grayscale output")
 	customMap        = flag.String("m", "", "Custom character set")
+	outputType       = flag.String("o", "text", "Output type (text, html)")
 	http_server      = flag.Bool("http", false, "run a http server")
 	http_server_host = flag.String("http:host", ":8080", "http server host")
 )
@@ -75,7 +76,21 @@ func main() {
 	ascii := flattenAscii(asciiset, *color, false)
 
 	result := strings.Join(ascii, "\n")
-	fmt.Println(result)
+
+	switch *outputType {
+	case "html":
+		var result []string
+		// Turn each line from ascii into html
+		for _, line := range ascii {
+			result = append(result, string(html.ConvertToHTML([]byte(line))))
+		}
+		// Merge them using newline
+		result2 := strings.Join(result, "<br>")
+		fmt.Println(result2)
+
+	default:
+		fmt.Println(result)
+	}
 
 }
 
